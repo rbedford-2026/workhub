@@ -15,53 +15,39 @@
       --bg: #111827; --surface: #1f2937; --surface2: #374151;
       --border: #374151; --text: #f9fafb; --text2: #9ca3af;
       --primary: #3b82f6; --primary-dark: #2563eb;
-      --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
+      --success: #10b981; --danger: #ef4444;
       --radius: 12px; --radius-sm: 8px;
     }
     html, body { height: 100%; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
     #app { height: 100%; display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; position: relative; overflow: hidden; }
-
-    /* SCREENS */
     .screen { display: none; flex-direction: column; height: 100%; overflow-y: auto; }
     .screen.active { display: flex; }
-
-    /* HEADER */
     .header { padding: 16px 20px 12px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 10; }
     .header h1 { font-size: 18px; font-weight: 700; flex: 1; }
-    .header .back-btn { background: none; border: none; color: var(--text2); font-size: 20px; cursor: pointer; padding: 4px; }
-    .header .badge { background: var(--primary); color: white; font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
-
-    /* COMPANY SELECT */
+    .header .back-btn { background: none; border: none; color: var(--text2); font-size: 24px; cursor: pointer; padding: 4px 8px; }
     .company-screen { justify-content: center; align-items: center; padding: 40px 24px; gap: 20px; }
     .logo { text-align: center; margin-bottom: 20px; }
     .logo h1 { font-size: 32px; font-weight: 800; color: var(--primary); letter-spacing: -1px; }
     .logo p { color: var(--text2); font-size: 14px; margin-top: 4px; }
     .company-btn { width: 100%; background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius); padding: 20px; cursor: pointer; text-align: left; transition: all 0.15s; }
-    .company-btn:hover, .company-btn:active { border-color: var(--primary); background: var(--surface2); }
+    .company-btn:active { border-color: var(--primary); background: var(--surface2); }
     .company-btn .co-name { font-size: 18px; font-weight: 700; color: var(--text); }
     .company-btn .co-sub { font-size: 13px; color: var(--text2); margin-top: 4px; }
     .company-btn .co-icon { font-size: 28px; margin-bottom: 8px; }
-
-    /* PIN PAD */
     .pin-screen { justify-content: center; align-items: center; padding: 24px; gap: 24px; }
     .pin-display { display: flex; gap: 12px; justify-content: center; }
     .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border); transition: all 0.15s; }
     .pin-dot.filled { background: var(--primary); border-color: var(--primary); }
     .pin-label { font-size: 16px; color: var(--text2); text-align: center; }
     .pin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 280px; }
-    .pin-key { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; font-size: 22px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.1s; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .pin-key { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; font-size: 22px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.1s; user-select: none; -webkit-tap-highlight-color: transparent; color: var(--text); }
     .pin-key:active { background: var(--primary); border-color: var(--primary); transform: scale(0.95); }
-    .pin-key.del { font-size: 18px; color: var(--text2); }
-    .pin-error { color: var(--danger); font-size: 14px; text-align: center; }
-
-    /* DASHBOARD */
+    .pin-error { color: var(--danger); font-size: 14px; text-align: center; min-height: 20px; }
     .content { padding: 16px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
     .welcome-card { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: var(--radius); padding: 20px; }
     .welcome-card h2 { font-size: 20px; font-weight: 700; }
     .welcome-card p { color: rgba(255,255,255,0.8); font-size: 13px; margin-top: 4px; }
     .section-title { font-size: 13px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 0; }
-
-    /* JOB CARDS */
     .job-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; cursor: pointer; transition: all 0.15s; }
     .job-card:active { background: var(--surface2); transform: scale(0.98); }
     .job-card .job-title { font-size: 16px; font-weight: 600; }
@@ -70,9 +56,6 @@
     .job-card .job-status.clocked-in { background: rgba(16,185,129,0.15); color: var(--success); }
     .job-card .job-status.not-started { background: rgba(156,163,175,0.15); color: var(--text2); }
     .job-card .job-status.clocked-out { background: rgba(59,130,246,0.15); color: var(--primary); }
-    .job-card .chevron { float: right; color: var(--text2); margin-top: 2px; }
-
-    /* JOB DETAIL */
     .detail-header { padding: 20px; background: var(--surface); border-bottom: 1px solid var(--border); }
     .detail-header h2 { font-size: 20px; font-weight: 700; }
     .detail-header p { color: var(--text2); font-size: 14px; margin-top: 4px; }
@@ -82,49 +65,36 @@
     .info-label { font-size: 13px; color: var(--text2); }
     .info-value { font-size: 14px; font-weight: 600; text-align: right; }
     .info-card { background: var(--surface); border-radius: var(--radius); padding: 16px; }
-
-    /* CLOCK BUTTON */
     .clock-btn { width: 100%; padding: 18px; border: none; border-radius: var(--radius); font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 10px; -webkit-tap-highlight-color: transparent; }
     .clock-btn:active { transform: scale(0.97); }
     .clock-btn.clock-in { background: var(--success); color: white; }
     .clock-btn.clock-out { background: var(--danger); color: white; }
-    .clock-btn.loading { background: var(--surface2); color: var(--text2); cursor: not-allowed; }
+    .clock-btn.disabled { background: var(--surface2); color: var(--text2); cursor: not-allowed; }
     .clock-time { background: var(--surface); border-radius: var(--radius); padding: 16px; text-align: center; }
     .clock-time .time-label { font-size: 12px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
     .clock-time .time-value { font-size: 24px; font-weight: 700; margin-top: 4px; color: var(--success); }
-
-    /* EMPTY STATE */
     .empty { text-align: center; padding: 48px 24px; color: var(--text2); }
     .empty .emoji { font-size: 48px; margin-bottom: 16px; }
-    .empty p { font-size: 15px; }
-
-    /* LOADING */
-    .loading-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; flex: 1; color: var(--text2); }
+    .loading-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; flex: 1; color: var(--text2); padding: 48px; }
     .spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* TOAST */
-    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--surface2); color: var(--text); padding: 12px 20px; border-radius: 24px; font-size: 14px; font-weight: 500; z-index: 100; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.4); transition: opacity 0.3s; }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--surface2); color: var(--text); padding: 12px 20px; border-radius: 24px; font-size: 14px; font-weight: 500; z-index: 100; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
     .toast.success { background: var(--success); color: white; }
     .toast.error { background: var(--danger); color: white; }
-
-    /* LOGOUT BTN */
     .logout-btn { background: none; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 12px; color: var(--text2); font-size: 13px; cursor: pointer; }
-
-    /* REFRESH BTN */
     .refresh-btn { background: none; border: none; color: var(--text2); font-size: 20px; cursor: pointer; padding: 4px; }
   </style>
 </head>
 <body>
 <div id="app">
 
-  <!-- SCREEN 1: COMPANY SELECT -->
+  <!-- SCREEN 1: COMPANY -->
   <div class="screen company-screen active" id="screen-company">
     <div class="logo">
       <h1>WorkHub</h1>
       <p>Munster Group Field Operations</p>
     </div>
-    <p style="color:var(--text2);font-size:14px;text-align:center">Select your company to continue</p>
+    <p style="color:var(--text2);font-size:14px;text-align:center">Select your company</p>
     <button class="company-btn" onclick="selectCompany('mcl')">
       <div class="co-icon">🏗️</div>
       <div class="co-name">Munster Contracts Ltd</div>
@@ -137,11 +107,11 @@
     </button>
   </div>
 
-  <!-- SCREEN 2: PIN LOGIN -->
+  <!-- SCREEN 2: PIN -->
   <div class="screen pin-screen" id="screen-pin">
     <div class="logo">
       <h1>WorkHub</h1>
-      <p id="pin-company-label">Enter your PIN</p>
+      <p id="pin-company-label"></p>
     </div>
     <p class="pin-label">Enter your 4-digit PIN</p>
     <div class="pin-display">
@@ -150,7 +120,7 @@
       <div class="pin-dot" id="dot-2"></div>
       <div class="pin-dot" id="dot-3"></div>
     </div>
-    <div id="pin-error" class="pin-error" style="min-height:20px"></div>
+    <div id="pin-error" class="pin-error"></div>
     <div class="pin-grid">
       <button class="pin-key" onclick="pinPress('1')">1</button>
       <button class="pin-key" onclick="pinPress('2')">2</button>
@@ -161,17 +131,17 @@
       <button class="pin-key" onclick="pinPress('7')">7</button>
       <button class="pin-key" onclick="pinPress('8')">8</button>
       <button class="pin-key" onclick="pinPress('9')">9</button>
-      <button class="pin-key" onclick="selectCompany(null)" style="font-size:13px;color:var(--text2)">Back</button>
+      <button class="pin-key" style="font-size:13px;color:var(--text2)" onclick="selectCompany(null)">Back</button>
       <button class="pin-key" onclick="pinPress('0')">0</button>
-      <button class="pin-key del" onclick="pinDelete()">⌫</button>
+      <button class="pin-key" onclick="pinDelete()">⌫</button>
     </div>
   </div>
 
-  <!-- SCREEN 3: DASHBOARD (Today's Jobs) -->
+  <!-- SCREEN 3: DASHBOARD -->
   <div class="screen" id="screen-dashboard">
     <div class="header">
       <h1>Today's Jobs</h1>
-      <button class="refresh-btn" onclick="loadSchedule()" title="Refresh">↻</button>
+      <button class="refresh-btn" onclick="loadSchedule()">↻</button>
       <button class="logout-btn" onclick="logout()">Sign out</button>
     </div>
     <div class="content">
@@ -200,69 +170,59 @@
         <div class="time-label">Clocked in at</div>
         <div class="time-value" id="clock-in-time">--:--</div>
       </div>
-      <button class="clock-btn clock-in" id="clock-btn" onclick="handleClockAction()">
-        ⏱ Clock In
-      </button>
-      <p style="font-size:12px;color:var(--text2);text-align:center" id="clock-status-msg"></p>
+      <button class="clock-btn clock-in" id="clock-btn" onclick="handleClockAction()">⏱ Clock In</button>
+      <p style="font-size:12px;color:var(--text2);text-align:center;min-height:16px" id="clock-status-msg"></p>
     </div>
   </div>
 
 </div>
-
-<!-- TOAST -->
 <div class="toast" id="toast" style="display:none"></div>
 
 <script>
-// ─── STATE ────────────────────────────────────────────────────────────────────
-const state = {
-  company: null,
-  employee: null, // { itemId, name, pin }
-  schedule: [],
-  currentJob: null,
-  clockedIn: {}, // jobItemId -> { wtrItemId, time }
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+const ZAPIER = {
+  findEmployee: "https://hooks.zapier.com/hooks/catch/400260/43i75rz/",
+  getSchedule:  "https://hooks.zapier.com/hooks/catch/400260/43i75rz/",
+  clockIn:      "https://hooks.zapier.com/hooks/catch/400260/43i75rz/",
+  clockOut:     "https://hooks.zapier.com/hooks/catch/400260/43i75rz/",
 };
 
-const FUNCTION_URL = "/.netlify/functions/podio";
+// ── STATE ─────────────────────────────────────────────────────────────────────
+const S = { company: null, employee: null, pin: "", schedule: [], currentJob: null, clockedIn: {} };
 
-// ─── NAVIGATION ───────────────────────────────────────────────────────────────
+// ── NAV ───────────────────────────────────────────────────────────────────────
 function showScreen(name) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   const el = document.getElementById("screen-" + name);
   if (el) el.classList.add("active");
 }
 
-// ─── COMPANY SELECT ───────────────────────────────────────────────────────────
-function selectCompany(company) {
-  if (!company) { showScreen("company"); state.company = null; return; }
-  state.company = company;
-  state.pin = "";
-  document.getElementById("pin-company-label").textContent =
-    company === "mcl" ? "Munster Contracts Ltd" : "Prt Test It Ltd";
-  updatePinDisplay();
+// ── COMPANY ───────────────────────────────────────────────────────────────────
+function selectCompany(c) {
+  if (!c) { S.company = null; S.pin = ""; showScreen("company"); return; }
+  S.company = c; S.pin = "";
+  document.getElementById("pin-company-label").textContent = c === "mcl" ? "Munster Contracts Ltd" : "Prt Test It Ltd";
   document.getElementById("pin-error").textContent = "";
+  updatePinDisplay();
   showScreen("pin");
 }
 
-// ─── PIN PAD ──────────────────────────────────────────────────────────────────
-state.pin = "";
-
-function pinPress(digit) {
-  if (state.pin.length >= 4) return;
-  state.pin += digit;
+// ── PIN ───────────────────────────────────────────────────────────────────────
+function pinPress(d) {
+  if (S.pin.length >= 4) return;
+  S.pin += d;
   updatePinDisplay();
-  if (state.pin.length === 4) setTimeout(submitPin, 150);
+  if (S.pin.length === 4) setTimeout(submitPin, 150);
 }
-
 function pinDelete() {
-  state.pin = state.pin.slice(0, -1);
+  S.pin = S.pin.slice(0, -1);
   updatePinDisplay();
   document.getElementById("pin-error").textContent = "";
 }
-
 function updatePinDisplay() {
   for (let i = 0; i < 4; i++) {
-    const dot = document.getElementById("dot-" + i);
-    if (dot) dot.classList.toggle("filled", i < state.pin.length);
+    const d = document.getElementById("dot-" + i);
+    if (d) d.classList.toggle("filled", i < S.pin.length);
   }
 }
 
@@ -270,210 +230,151 @@ async function submitPin() {
   document.getElementById("pin-error").textContent = "";
   showToast("Checking PIN...");
   try {
-    const res = await fetch(FUNCTION_URL, {
+    const res = await fetch(ZAPIER.findEmployee, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "findEmployee", company: state.company, pin: state.pin }),
+      body: JSON.stringify({ action: "findEmployee", company: S.company, pin: S.pin }),
     });
     const data = await res.json();
-    if (data.itemId) {
-      state.employee = { itemId: data.itemId, name: data.name, pin: state.pin };
+    if (data.itemId && data.name) {
+      S.employee = { itemId: data.itemId, name: data.name };
+      hideToast();
       showDashboard();
     } else {
       document.getElementById("pin-error").textContent = "❌ PIN not recognised. Try again.";
-      state.pin = "";
-      updatePinDisplay();
-      hideToast();
+      S.pin = ""; updatePinDisplay(); hideToast();
     }
-  } catch (err) {
+  } catch (e) {
     document.getElementById("pin-error").textContent = "Connection error. Try again.";
-    state.pin = "";
-    updatePinDisplay();
-    hideToast();
+    S.pin = ""; updatePinDisplay(); hideToast();
   }
 }
 
-// ─── DASHBOARD ────────────────────────────────────────────────────────────────
+// ── DASHBOARD ─────────────────────────────────────────────────────────────────
 function showDashboard() {
   const now = new Date();
-  const hour = now.getHours();
-  const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
-  document.getElementById("dash-welcome").textContent = greeting + ", " + (state.employee ? state.employee.name.split(" ")[0] : "");
-  document.getElementById("dash-date").textContent = now.toLocaleDateString("en-IE", { weekday: "long", day: "numeric", month: "long" });
+  const h = now.getHours();
+  document.getElementById("dash-welcome").textContent =
+    (h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening") +
+    ", " + S.employee.name.split(" ")[0];
+  document.getElementById("dash-date").textContent =
+    now.toLocaleDateString("en-IE", { weekday: "long", day: "numeric", month: "long" });
   showScreen("dashboard");
   loadSchedule();
 }
 
 async function loadSchedule() {
   const list = document.getElementById("jobs-list");
-  list.innerHTML = '<div class="loading-state"><div class="spinner"></div><p>Loading your jobs...</p></div>';
+  list.innerHTML = '<div class="loading-state"><div class="spinner"></div><p>Loading jobs...</p></div>';
   try {
-    const res = await fetch(FUNCTION_URL, {
+    const res = await fetch(ZAPIER.getSchedule, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "getSchedule", company: state.company, employeePodioId: state.employee.itemId }),
+      body: JSON.stringify({ action: "getSchedule", company: S.company, employeeId: S.employee.itemId }),
     });
     const data = await res.json();
-    state.schedule = data.schedule || [];
+    S.schedule = data.schedule || [];
     renderJobs();
-  } catch (err) {
-    list.innerHTML = '<div class="empty"><div class="emoji">⚠️</div><p>Could not load schedule. Pull to refresh.</p></div>';
+  } catch (e) {
+    list.innerHTML = '<div class="empty"><div class="emoji">⚠️</div><p>Could not load schedule.</p></div>';
   }
 }
 
 function renderJobs() {
   const list = document.getElementById("jobs-list");
-  if (!state.schedule.length) {
+  if (!S.schedule.length) {
     list.innerHTML = '<div class="empty"><div class="emoji">☀️</div><p>No jobs scheduled for today</p></div>';
     return;
   }
-  list.innerHTML = state.schedule.map(job => {
-    const clocked = state.clockedIn[job.itemId];
-    const statusClass = clocked ? (clocked.out ? "clocked-out" : "clocked-in") : "not-started";
-    const statusText = clocked ? (clocked.out ? "✓ Complete" : "● Clocked in") : "○ Not started";
+  list.innerHTML = S.schedule.map(job => {
+    const c = S.clockedIn[job.itemId];
+    const cls = c ? (c.out ? "clocked-out" : "clocked-in") : "not-started";
+    const txt = c ? (c.out ? "✓ Complete" : "● Clocked in") : "○ Not started";
     return '<div class="job-card" onclick="openJob(\'' + job.itemId + '\')">' +
-      '<span class="chevron">›</span>' +
-      '<div class="job-title">' + escHtml(job.workOrderTitle || job.title) + '</div>' +
-      '<div class="job-meta">' +
-        '<span>📋 ' + escHtml(job.title) + '</span>' +
-        (job.time ? '<span>🕐 ' + escHtml(job.time) + '</span>' : '') +
-      '</div>' +
-      '<div class="job-status ' + statusClass + '">' + statusText + '</div>' +
-    '</div>';
+      '<div class="job-title">' + esc(job.workOrderTitle || job.title) + '</div>' +
+      '<div class="job-meta"><span>📋 ' + esc(job.title) + '</span>' +
+      (job.time ? '<span>🕐 ' + esc(job.time) + '</span>' : '') + '</div>' +
+      '<div class="job-status ' + cls + '">' + txt + '</div></div>';
   }).join("");
 }
 
-// ─── JOB DETAIL ───────────────────────────────────────────────────────────────
-function openJob(itemId) {
-  const job = state.schedule.find(j => j.itemId === itemId);
+// ── JOB DETAIL ────────────────────────────────────────────────────────────────
+function openJob(id) {
+  const job = S.schedule.find(j => j.itemId === id);
   if (!job) return;
-  state.currentJob = job;
-
+  S.currentJob = job;
   document.getElementById("detail-wo-title").textContent = job.workOrderTitle || "Work Order";
-  document.getElementById("detail-job-title").textContent = job.title || "Schedule Item";
+  document.getElementById("detail-job-title").textContent = job.title || "";
   document.getElementById("detail-job-sub").textContent = job.date || "";
-
-  const info = document.getElementById("detail-info");
-  info.innerHTML =
-    '<div class="info-row"><span class="info-label">Work Order</span><span class="info-value">' + escHtml(job.workOrderTitle || "—") + '</span></div>' +
-    '<div class="info-row"><span class="info-label">Date</span><span class="info-value">' + escHtml(job.date || "Today") + '</span></div>' +
-    '<div class="info-row"><span class="info-label">Time</span><span class="info-value">' + escHtml(job.time || "—") + '</span></div>' +
-    '<div class="info-row"><span class="info-label">Employee</span><span class="info-value">' + escHtml(state.employee.name) + '</span></div>';
-
-  const clocked = state.clockedIn[job.itemId];
+  document.getElementById("detail-info").innerHTML =
+    '<div class="info-row"><span class="info-label">Work Order</span><span class="info-value">' + esc(job.workOrderTitle || "—") + '</span></div>' +
+    '<div class="info-row"><span class="info-label">Date</span><span class="info-value">' + esc(job.date || "Today") + '</span></div>' +
+    '<div class="info-row"><span class="info-label">Time</span><span class="info-value">' + esc(job.time || "—") + '</span></div>' +
+    '<div class="info-row"><span class="info-label">Employee</span><span class="info-value">' + esc(S.employee.name) + '</span></div>';
+  const c = S.clockedIn[id];
   const btn = document.getElementById("clock-btn");
-  const timeDisplay = document.getElementById("clock-time-display");
+  const td = document.getElementById("clock-time-display");
   const msg = document.getElementById("clock-status-msg");
-
-  if (clocked && clocked.out) {
-    btn.textContent = "✓ Shift Complete";
-    btn.className = "clock-btn loading";
-    btn.disabled = true;
-    timeDisplay.style.display = "block";
-    document.getElementById("clock-in-time").textContent = clocked.inTime;
-    msg.textContent = "Clocked out at " + clocked.outTime;
-  } else if (clocked) {
-    btn.textContent = "⏹ Clock Out";
-    btn.className = "clock-btn clock-out";
-    btn.disabled = false;
-    timeDisplay.style.display = "block";
-    document.getElementById("clock-in-time").textContent = clocked.inTime;
+  if (c && c.out) {
+    btn.textContent = "✓ Shift Complete"; btn.className = "clock-btn disabled"; btn.disabled = true;
+    td.style.display = "block"; document.getElementById("clock-in-time").textContent = c.inTime;
+    msg.textContent = "Clocked out at " + c.outTime;
+  } else if (c) {
+    btn.textContent = "⏹ Clock Out"; btn.className = "clock-btn clock-out"; btn.disabled = false;
+    td.style.display = "block"; document.getElementById("clock-in-time").textContent = c.inTime;
     msg.textContent = "You are currently clocked in";
   } else {
-    btn.textContent = "⏱ Clock In";
-    btn.className = "clock-btn clock-in";
-    btn.disabled = false;
-    timeDisplay.style.display = "none";
-    msg.textContent = "";
+    btn.textContent = "⏱ Clock In"; btn.className = "clock-btn clock-in"; btn.disabled = false;
+    td.style.display = "none"; msg.textContent = "";
   }
-
   showScreen("detail");
 }
 
 async function handleClockAction() {
-  const job = state.currentJob;
+  const job = S.currentJob;
   if (!job) return;
-  const clocked = state.clockedIn[job.itemId];
+  const c = S.clockedIn[job.itemId];
   const now = new Date();
   const timeStr = now.toTimeString().slice(0, 5);
-  const dateTimeStr = now.toISOString().slice(0, 16).replace("T", " ");
-
+  const dtStr = now.toISOString().slice(0, 16).replace("T", " ");
   const btn = document.getElementById("clock-btn");
-  btn.textContent = "⏳ Syncing...";
-  btn.className = "clock-btn loading";
-  btn.disabled = true;
-
+  btn.textContent = "⏳ Syncing..."; btn.className = "clock-btn disabled"; btn.disabled = true;
   try {
-    if (!clocked) {
-      // CLOCK IN
-      const res = await fetch(FUNCTION_URL, {
+    if (!c) {
+      const res = await fetch(ZAPIER.clockIn, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "clockIn",
-          company: state.company,
-          workOrderItemId: job.workOrderId,
-          employeePodioId: state.employee.itemId,
-          startTime: dateTimeStr,
-        }),
+        body: JSON.stringify({ action: "clockIn", company: S.company, workOrderItemId: job.workOrderId, employeeId: S.employee.itemId, employeeName: S.employee.name, startTime: dtStr }),
       });
       const data = await res.json();
-      state.clockedIn[job.itemId] = { inTime: timeStr, wtrItemId: data.wtrItemId };
+      S.clockedIn[job.itemId] = { inTime: timeStr, wtrItemId: data.wtrItemId || null };
       showToast("✅ Clocked in at " + timeStr, "success");
     } else {
-      // CLOCK OUT
-      await fetch(FUNCTION_URL, {
+      await fetch(ZAPIER.clockOut, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "clockOut",
-          company: state.company,
-          workOrderItemId: job.workOrderId,
-          employeePodioId: state.employee.itemId,
-          endTime: dateTimeStr,
-          wtrItemId: clocked.wtrItemId,
-        }),
+        body: JSON.stringify({ action: "clockOut", company: S.company, workOrderItemId: job.workOrderId, employeeId: S.employee.itemId, employeeName: S.employee.name, endTime: dtStr, wtrItemId: c.wtrItemId }),
       });
-      state.clockedIn[job.itemId] = { ...clocked, out: true, outTime: timeStr };
+      S.clockedIn[job.itemId] = { ...c, out: true, outTime: timeStr };
       showToast("✅ Clocked out at " + timeStr, "success");
     }
-    renderJobs();
-    openJob(job.itemId);
-  } catch (err) {
-    showToast("❌ Sync failed. Please try again.", "error");
+    renderJobs(); openJob(job.itemId);
+  } catch (e) {
+    showToast("❌ Sync failed. Try again.", "error");
     openJob(job.itemId);
   }
 }
 
-// ─── UTILS ────────────────────────────────────────────────────────────────────
-function logout() {
-  state.company = null;
-  state.employee = null;
-  state.schedule = [];
-  state.currentJob = null;
-  state.clockedIn = {};
-  state.pin = "";
-  showScreen("company");
-}
-
-function escHtml(str) {
-  if (!str) return "";
-  return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
-}
-
-let toastTimer = null;
+// ── UTILS ─────────────────────────────────────────────────────────────────────
+function logout() { Object.assign(S, { company:null, employee:null, pin:"", schedule:[], currentJob:null, clockedIn:{} }); showScreen("company"); }
+function esc(s) { return s ? String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;") : ""; }
+let _tt = null;
 function showToast(msg, type) {
   const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.className = "toast" + (type ? " " + type : "");
-  t.style.display = "block";
-  if (toastTimer) clearTimeout(toastTimer);
-  toastTimer = setTimeout(hideToast, 3000);
+  t.textContent = msg; t.className = "toast" + (type ? " " + type : ""); t.style.display = "block";
+  if (_tt) clearTimeout(_tt); _tt = setTimeout(hideToast, 3000);
 }
-function hideToast() {
-  const t = document.getElementById("toast");
-  if (t) t.style.display = "none";
-}
+function hideToast() { const t = document.getElementById("toast"); if (t) t.style.display = "none"; }
 </script>
 </body>
 </html>
