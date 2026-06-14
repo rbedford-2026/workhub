@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="theme-color" content="#111827"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="WorkHub"/>
+  <link rel="manifest" href="/manifest.json"/>
+  <title>WorkHub</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #111827; --surface: #1f2937; --surface2: #374151;
+      --border: #374151; --text: #f9fafb; --text2: #9ca3af;
+      --primary: #3b82f6; --primary-dark: #2563eb;
+      --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
+      --radius: 12px; --radius-sm: 8px;
+    }
+    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    #app { height: 100%; display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; position: relative; overflow: hidden; }
+
+    /* SCREENS */
+    .screen { display: none; flex-direction: column; height: 100%; overflow-y: auto; }
+    .screen.active { display: flex; }
+
+    /* HEADER */
+    .header { padding: 16px 20px 12px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 10; }
+    .header h1 { font-size: 18px; font-weight: 700; flex: 1; }
+    .header .back-btn { background: none; border: none; color: var(--text2); font-size: 20px; cursor: pointer; padding: 4px; }
+    .header .badge { background: var(--primary); color: white; font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+
+    /* COMPANY SELECT */
+    .company-screen { justify-content: center; align-items: center; padding: 40px 24px; gap: 20px; }
+    .logo { text-align: center; margin-bottom: 20px; }
+    .logo h1 { font-size: 32px; font-weight: 800; color: var(--primary); letter-spacing: -1px; }
+    .logo p { color: var(--text2); font-size: 14px; margin-top: 4px; }
+    .company-btn { width: 100%; background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius); padding: 20px; cursor: pointer; text-align: left; transition: all 0.15s; }
+    .company-btn:hover, .company-btn:active { border-color: var(--primary); background: var(--surface2); }
+    .company-btn .co-name { font-size: 18px; font-weight: 700; color: var(--text); }
+    .company-btn .co-sub { font-size: 13px; color: var(--text2); margin-top: 4px; }
+    .company-btn .co-icon { font-size: 28px; margin-bottom: 8px; }
+
+    /* PIN PAD */
+    .pin-screen { justify-content: center; align-items: center; padding: 24px; gap: 24px; }
+    .pin-display { display: flex; gap: 12px; justify-content: center; }
+    .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border); transition: all 0.15s; }
+    .pin-dot.filled { background: var(--primary); border-color: var(--primary); }
+    .pin-label { font-size: 16px; color: var(--text2); text-align: center; }
+    .pin-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; max-width: 280px; }
+    .pin-key { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; font-size: 22px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.1s; user-select: none; -webkit-tap-highlight-color: transparent; }
+    .pin-key:active { background: var(--primary); border-color: var(--primary); transform: scale(0.95); }
+    .pin-key.del { font-size: 18px; color: var(--text2); }
+    .pin-error { color: var(--danger); font-size: 14px; text-align: center; }
+
+    /* DASHBOARD */
+    .content { padding: 16px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+    .welcome-card { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border-radius: var(--radius); padding: 20px; }
+    .welcome-card h2 { font-size: 20px; font-weight: 700; }
+    .welcome-card p { color: rgba(255,255,255,0.8); font-size: 13px; margin-top: 4px; }
+    .section-title { font-size: 13px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 0; }
+
+    /* JOB CARDS */
+    .job-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; cursor: pointer; transition: all 0.15s; }
+    .job-card:active { background: var(--surface2); transform: scale(0.98); }
+    .job-card .job-title { font-size: 16px; font-weight: 600; }
+    .job-card .job-meta { font-size: 13px; color: var(--text2); margin-top: 4px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .job-card .job-status { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; margin-top: 10px; }
+    .job-card .job-status.clocked-in { background: rgba(16,185,129,0.15); color: var(--success); }
+    .job-card .job-status.not-started { background: rgba(156,163,175,0.15); color: var(--text2); }
+    .job-card .job-status.clocked-out { background: rgba(59,130,246,0.15); color: var(--primary); }
+    .job-card .chevron { float: right; color: var(--text2); margin-top: 2px; }
+
+    /* JOB DETAIL */
+    .detail-header { padding: 20px; background: var(--surface); border-bottom: 1px solid var(--border); }
+    .detail-header h2 { font-size: 20px; font-weight: 700; }
+    .detail-header p { color: var(--text2); font-size: 14px; margin-top: 4px; }
+    .detail-content { padding: 16px; display: flex; flex-direction: column; gap: 16px; flex: 1; }
+    .info-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+    .info-row:last-child { border-bottom: none; }
+    .info-label { font-size: 13px; color: var(--text2); }
+    .info-value { font-size: 14px; font-weight: 600; text-align: right; }
+    .info-card { background: var(--surface); border-radius: var(--radius); padding: 16px; }
+
+    /* CLOCK BUTTON */
+    .clock-btn { width: 100%; padding: 18px; border: none; border-radius: var(--radius); font-size: 18px; font-weight: 700; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 10px; -webkit-tap-highlight-color: transparent; }
+    .clock-btn:active { transform: scale(0.97); }
+    .clock-btn.clock-in { background: var(--success); color: white; }
+    .clock-btn.clock-out { background: var(--danger); color: white; }
+    .clock-btn.loading { background: var(--surface2); color: var(--text2); cursor: not-allowed; }
+    .clock-time { background: var(--surface); border-radius: var(--radius); padding: 16px; text-align: center; }
+    .clock-time .time-label { font-size: 12px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
+    .clock-time .time-value { font-size: 24px; font-weight: 700; margin-top: 4px; color: var(--success); }
+
+    /* EMPTY STATE */
+    .empty { text-align: center; padding: 48px 24px; color: var(--text2); }
+    .empty .emoji { font-size: 48px; margin-bottom: 16px; }
+    .empty p { font-size: 15px; }
+
+    /* LOADING */
+    .loading-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; flex: 1; color: var(--text2); }
+    .spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* TOAST */
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--surface2); color: var(--text); padding: 12px 20px; border-radius: 24px; font-size: 14px; font-weight: 500; z-index: 100; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,0.4); transition: opacity 0.3s; }
+    .toast.success { background: var(--success); color: white; }
+    .toast.error { background: var(--danger); color: white; }
+
+    /* LOGOUT BTN */
+    .logout-btn { background: none; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 6px 12px; color: var(--text2); font-size: 13px; cursor: pointer; }
+
+    /* REFRESH BTN */
+    .refresh-btn { background: none; border: none; color: var(--text2); font-size: 20px; cursor: pointer; padding: 4px; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- SCREEN 1: COMPANY SELECT -->
+  <div class="screen company-screen active" id="screen-company">
+    <div class="logo">
+      <h1>WorkHub</h1>
+      <p>Munster Group Field Operations</p>
+    </div>
+    <p style="color:var(--text2);font-size:14px;text-align:center">Select your company to continue</p>
+    <button class="company-btn" onclick="selectCompany('mcl')">
+      <div class="co-icon">🏗️</div>
+      <div class="co-name">Munster Contracts Ltd</div>
+      <div class="co-sub">MCL · Construction & Contracts</div>
+    </button>
+    <button class="company-btn" onclick="selectCompany('ptl')">
+      <div class="co-icon">🔧</div>
+      <div class="co-name">Prt Test It Ltd</div>
+      <div class="co-sub">PTL · Testing & Inspection</div>
+    </button>
+  </div>
+
+  <!-- SCREEN 2: PIN LOGIN -->
+  <div class="screen pin-screen" id="screen-pin">
+    <div class="logo">
+      <h1>WorkHub</h1>
+      <p id="pin-company-label">Enter your PIN</p>
+    </div>
+    <p class="pin-label">Enter your 4-digit PIN</p>
+    <div class="pin-display">
+      <div class="pin-dot" id="dot-0"></div>
+      <div class="pin-dot" id="dot-1"></div>
+      <div class="pin-dot" id="dot-2"></div>
+      <div class="pin-dot" id="dot-3"></div>
+    </div>
+    <div id="pin-error" class="pin-error" style="min-height:20px"></div>
+    <div class="pin-grid">
+      <button class="pin-key" onclick="pinPress('1')">1</button>
+      <button class="pin-key" onclick="pinPress('2')">2</button>
+      <button class="pin-key" onclick="pinPress('3')">3</button>
+      <button class="pin-key" onclick="pinPress('4')">4</button>
+      <button class="pin-key" onclick="pinPress('5')">5</button>
+      <button class="pin-key" onclick="pinPress('6')">6</button>
+      <button class="pin-key" onclick="pinPress('7')">7</button>
+      <button class="pin-key" onclick="pinPress('8')">8</button>
+      <button class="pin-key" onclick="pinPress('9')">9</button>
+      <button class="pin-key" onclick="selectCompany(null)" style="font-size:13px;color:var(--text2)">Back</button>
+      <button class="pin-key" onclick="pinPress('0')">0</button>
+      <button class="pin-key del" onclick="pinDelete()">⌫</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: DASHBOARD (Today's Jobs) -->
+  <div class="screen" id="screen-dashboard">
+    <div class="header">
+      <h1>Today's Jobs</h1>
+      <button class="refresh-btn" onclick="loadSchedule()" title="Refresh">↻</button>
+      <button class="logout-btn" onclick="logout()">Sign out</button>
+    </div>
+    <div class="content">
+      <div class="welcome-card">
+        <h2 id="dash-welcome">Good morning</h2>
+        <p id="dash-date"></p>
+      </div>
+      <div class="section-title">Scheduled today</div>
+      <div id="jobs-list"></div>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: JOB DETAIL -->
+  <div class="screen" id="screen-detail">
+    <div class="header">
+      <button class="back-btn" onclick="showScreen('dashboard')">‹</button>
+      <h1 id="detail-wo-title">Work Order</h1>
+    </div>
+    <div class="detail-header">
+      <h2 id="detail-job-title"></h2>
+      <p id="detail-job-sub"></p>
+    </div>
+    <div class="detail-content">
+      <div class="info-card" id="detail-info"></div>
+      <div id="clock-time-display" style="display:none" class="clock-time">
+        <div class="time-label">Clocked in at</div>
+        <div class="time-value" id="clock-in-time">--:--</div>
+      </div>
+      <button class="clock-btn clock-in" id="clock-btn" onclick="handleClockAction()">
+        ⏱ Clock In
+      </button>
+      <p style="font-size:12px;color:var(--text2);text-align:center" id="clock-status-msg"></p>
+    </div>
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast" style="display:none"></div>
+
+<script>
+// ─── STATE ────────────────────────────────────────────────────────────────────
+const state = {
+  company: null,
+  employee: null, // { itemId, name, pin }
+  schedule: [],
+  currentJob: null,
+  clockedIn: {}, // jobItemId -> { wtrItemId, time }
+};
+
+const FUNCTION_URL = "/.netlify/functions/podio";
+
+// ─── NAVIGATION ───────────────────────────────────────────────────────────────
+function showScreen(name) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  const el = document.getElementById("screen-" + name);
+  if (el) el.classList.add("active");
+}
+
+// ─── COMPANY SELECT ───────────────────────────────────────────────────────────
+function selectCompany(company) {
+  if (!company) { showScreen("company"); state.company = null; return; }
+  state.company = company;
+  state.pin = "";
+  document.getElementById("pin-company-label").textContent =
+    company === "mcl" ? "Munster Contracts Ltd" : "Prt Test It Ltd";
+  updatePinDisplay();
+  document.getElementById("pin-error").textContent = "";
+  showScreen("pin");
+}
+
+// ─── PIN PAD ──────────────────────────────────────────────────────────────────
+state.pin = "";
+
+function pinPress(digit) {
+  if (state.pin.length >= 4) return;
+  state.pin += digit;
+  updatePinDisplay();
+  if (state.pin.length === 4) setTimeout(submitPin, 150);
+}
+
+function pinDelete() {
+  state.pin = state.pin.slice(0, -1);
+  updatePinDisplay();
+  document.getElementById("pin-error").textContent = "";
+}
+
+function updatePinDisplay() {
+  for (let i = 0; i < 4; i++) {
+    const dot = document.getElementById("dot-" + i);
+    if (dot) dot.classList.toggle("filled", i < state.pin.length);
+  }
+}
+
+async function submitPin() {
+  document.getElementById("pin-error").textContent = "";
+  showToast("Checking PIN...");
+  try {
+    const res = await fetch(FUNCTION_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "findEmployee", company: state.company, pin: state.pin }),
+    });
+    const data = await res.json();
+    if (data.itemId) {
+      state.employee = { itemId: data.itemId, name: data.name, pin: state.pin };
+      showDashboard();
+    } else {
+      document.getElementById("pin-error").textContent = "❌ PIN not recognised. Try again.";
+      state.pin = "";
+      updatePinDisplay();
+      hideToast();
+    }
+  } catch (err) {
+    document.getElementById("pin-error").textContent = "Connection error. Try again.";
+    state.pin = "";
+    updatePinDisplay();
+    hideToast();
+  }
+}
+
+// ─── DASHBOARD ────────────────────────────────────────────────────────────────
+function showDashboard() {
+  const now = new Date();
+  const hour = now.getHours();
+  const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+  document.getElementById("dash-welcome").textContent = greeting + ", " + (state.employee ? state.employee.name.split(" ")[0] : "");
+  document.getElementById("dash-date").textContent = now.toLocaleDateString("en-IE", { weekday: "long", day: "numeric", month: "long" });
+  showScreen("dashboard");
+  loadSchedule();
+}
+
+async function loadSchedule() {
+  const list = document.getElementById("jobs-list");
+  list.innerHTML = '<div class="loading-state"><div class="spinner"></div><p>Loading your jobs...</p></div>';
+  try {
+    const res = await fetch(FUNCTION_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "getSchedule", company: state.company, employeePodioId: state.employee.itemId }),
+    });
+    const data = await res.json();
+    state.schedule = data.schedule || [];
+    renderJobs();
+  } catch (err) {
+    list.innerHTML = '<div class="empty"><div class="emoji">⚠️</div><p>Could not load schedule. Pull to refresh.</p></div>';
+  }
+}
+
+function renderJobs() {
+  const list = document.getElementById("jobs-list");
+  if (!state.schedule.length) {
+    list.innerHTML = '<div class="empty"><div class="emoji">☀️</div><p>No jobs scheduled for today</p></div>';
+    return;
+  }
+  list.innerHTML = state.schedule.map(job => {
+    const clocked = state.clockedIn[job.itemId];
+    const statusClass = clocked ? (clocked.out ? "clocked-out" : "clocked-in") : "not-started";
+    const statusText = clocked ? (clocked.out ? "✓ Complete" : "● Clocked in") : "○ Not started";
+    return '<div class="job-card" onclick="openJob(\'' + job.itemId + '\')">' +
+      '<span class="chevron">›</span>' +
+      '<div class="job-title">' + escHtml(job.workOrderTitle || job.title) + '</div>' +
+      '<div class="job-meta">' +
+        '<span>📋 ' + escHtml(job.title) + '</span>' +
+        (job.time ? '<span>🕐 ' + escHtml(job.time) + '</span>' : '') +
+      '</div>' +
+      '<div class="job-status ' + statusClass + '">' + statusText + '</div>' +
+    '</div>';
+  }).join("");
+}
+
+// ─── JOB DETAIL ───────────────────────────────────────────────────────────────
+function openJob(itemId) {
+  const job = state.schedule.find(j => j.itemId === itemId);
+  if (!job) return;
+  state.currentJob = job;
+
+  document.getElementById("detail-wo-title").textContent = job.workOrderTitle || "Work Order";
+  document.getElementById("detail-job-title").textContent = job.title || "Schedule Item";
+  document.getElementById("detail-job-sub").textContent = job.date || "";
+
+  const info = document.getElementById("detail-info");
+  info.innerHTML =
+    '<div class="info-row"><span class="info-label">Work Order</span><span class="info-value">' + escHtml(job.workOrderTitle || "—") + '</span></div>' +
+    '<div class="info-row"><span class="info-label">Date</span><span class="info-value">' + escHtml(job.date || "Today") + '</span></div>' +
+    '<div class="info-row"><span class="info-label">Time</span><span class="info-value">' + escHtml(job.time || "—") + '</span></div>' +
+    '<div class="info-row"><span class="info-label">Employee</span><span class="info-value">' + escHtml(state.employee.name) + '</span></div>';
+
+  const clocked = state.clockedIn[job.itemId];
+  const btn = document.getElementById("clock-btn");
+  const timeDisplay = document.getElementById("clock-time-display");
+  const msg = document.getElementById("clock-status-msg");
+
+  if (clocked && clocked.out) {
+    btn.textContent = "✓ Shift Complete";
+    btn.className = "clock-btn loading";
+    btn.disabled = true;
+    timeDisplay.style.display = "block";
+    document.getElementById("clock-in-time").textContent = clocked.inTime;
+    msg.textContent = "Clocked out at " + clocked.outTime;
+  } else if (clocked) {
+    btn.textContent = "⏹ Clock Out";
+    btn.className = "clock-btn clock-out";
+    btn.disabled = false;
+    timeDisplay.style.display = "block";
+    document.getElementById("clock-in-time").textContent = clocked.inTime;
+    msg.textContent = "You are currently clocked in";
+  } else {
+    btn.textContent = "⏱ Clock In";
+    btn.className = "clock-btn clock-in";
+    btn.disabled = false;
+    timeDisplay.style.display = "none";
+    msg.textContent = "";
+  }
+
+  showScreen("detail");
+}
+
+async function handleClockAction() {
+  const job = state.currentJob;
+  if (!job) return;
+  const clocked = state.clockedIn[job.itemId];
+  const now = new Date();
+  const timeStr = now.toTimeString().slice(0, 5);
+  const dateTimeStr = now.toISOString().slice(0, 16).replace("T", " ");
+
+  const btn = document.getElementById("clock-btn");
+  btn.textContent = "⏳ Syncing...";
+  btn.className = "clock-btn loading";
+  btn.disabled = true;
+
+  try {
+    if (!clocked) {
+      // CLOCK IN
+      const res = await fetch(FUNCTION_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "clockIn",
+          company: state.company,
+          workOrderItemId: job.workOrderId,
+          employeePodioId: state.employee.itemId,
+          startTime: dateTimeStr,
+        }),
+      });
+      const data = await res.json();
+      state.clockedIn[job.itemId] = { inTime: timeStr, wtrItemId: data.wtrItemId };
+      showToast("✅ Clocked in at " + timeStr, "success");
+    } else {
+      // CLOCK OUT
+      await fetch(FUNCTION_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "clockOut",
+          company: state.company,
+          workOrderItemId: job.workOrderId,
+          employeePodioId: state.employee.itemId,
+          endTime: dateTimeStr,
+          wtrItemId: clocked.wtrItemId,
+        }),
+      });
+      state.clockedIn[job.itemId] = { ...clocked, out: true, outTime: timeStr };
+      showToast("✅ Clocked out at " + timeStr, "success");
+    }
+    renderJobs();
+    openJob(job.itemId);
+  } catch (err) {
+    showToast("❌ Sync failed. Please try again.", "error");
+    openJob(job.itemId);
+  }
+}
+
+// ─── UTILS ────────────────────────────────────────────────────────────────────
+function logout() {
+  state.company = null;
+  state.employee = null;
+  state.schedule = [];
+  state.currentJob = null;
+  state.clockedIn = {};
+  state.pin = "";
+  showScreen("company");
+}
+
+function escHtml(str) {
+  if (!str) return "";
+  return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+let toastTimer = null;
+function showToast(msg, type) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.className = "toast" + (type ? " " + type : "");
+  t.style.display = "block";
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(hideToast, 3000);
+}
+function hideToast() {
+  const t = document.getElementById("toast");
+  if (t) t.style.display = "none";
+}
+</script>
+</body>
+</html>
